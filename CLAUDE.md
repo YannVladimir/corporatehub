@@ -232,16 +232,26 @@ behind a login — the public-facing side of Umbraco security.
       a Logout button when signed in; deliberately shows nothing extra when logged
       out, since `Login`/`Register` already appear in the tree-driven nav — avoided
       hardcoding duplicate guessed URLs.
-- [ ] 5. Protect a content branch to a Member Group; verify anonymous users get
-      redirected — **not done yet, this is the next step**
-- [ ] 6. Add a profile edit / password reset page
+- [x] 5. Protect a content branch to a Member Group; verify anonymous users get
+      redirected — done. Used "Public Access" (the menu item spotted back in
+      Milestone 1) on the `Services` branch, "Group based protection" restricted to
+      `Customers`, both Login Page and Error Page pointed at `Login`. Verified:
+      anonymous visitor redirected to `/login`; a `Customers`-group member granted
+      access after logging in. Protection cascades down to `Services`'s children
+      automatically (not just the one node).
+- [ ] 6. Add a profile edit / password reset page — **not done yet, this is the
+      next step**
 
 ## Next step when you pick this back up
 
-Protect a content branch to a Member Group — see Milestone 4 step 5 above. Use the
-`News Editors`-style backoffice permission pattern but for Members this time (Umbraco
-calls this "Public Access" on a content node, not "Culture and Hostnames"). Verify an
-anonymous visitor gets redirected away from the protected branch.
+Add a profile edit / password reset page — see Milestone 4 step 6 above (the last
+Milestone 4 item). Scoping decision to make explicit: a true "forgot password" flow
+needs emailed reset tokens, and email sending isn't wired up until Milestone 5 (Forms
+& integrations). So this step should cover: (a) a profile edit page (member updates
+their own `Full Name`/`Address` — finally using `IMemberService`, the content-style API,
+since `IMemberManager` alone can't write custom member properties, a gap noted back in
+step 3), and (b) an authenticated "change password" form (old + new password, while
+already logged in) rather than the full anonymous emailed-token reset flow.
 
 Git workflow: one checklist item = one branch = one push = one PR, branched fresh off
 `main` each time. Never push straight to `main`.
