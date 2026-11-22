@@ -149,9 +149,23 @@ versioning, who's allowed to edit what, and how pages get found on Google.
 - [x] 1. Enable multilingual setup — done. English (default) + French + Kinyarwanda
       all exist in Settings → Languages (Kinyarwanda was confirmed present in this
       install's culture list — not something I was certain of in advance).
-- [ ] 2. Mark properties as culture-variant vs invariant; translate Home/About content
-      — **not done yet, this is the next step**
-- [ ] 3. Add a language switcher to the shared layout
+- [x] 2. Mark properties as culture-variant vs invariant; translate Home/About content
+      — done. `SEO`'s `Browser Title`/`Meta Description` set to vary by culture
+      (invariant stayed on `Open Graph Image`); `HomePage`'s `Heading`/`Intro Text`
+      likewise. Both require the Document Type's own "Allow vary by culture" master
+      switch (Settings tab → Data variations) before per-property variance options
+      even appear. `Home` and `About` both have EN/FR/RW variants, all published.
+      **Gotcha hit and solved:** non-default-culture content has NO URL until a
+      hostname is bound to that culture (Content → node → "..." → "Culture and
+      Hostnames"), even if published — Umbraco resolves culture by domain/hostname,
+      not by path. Faked real domains locally using extra Kestrel ports in
+      `Properties/launchSettings.json` (`44378`=EN, `44380`=FR, `44381`=RW), each
+      bound via `localhost:PORT` hostname entries. Block List/Grid properties
+      (`Page Sections`) correctly stay invariant — variance for block content would
+      need to be set on the Element Type itself, not the top-level property; noted
+      as a stretch goal, not pursued.
+- [ ] 3. Add a language switcher to the shared layout — **not done yet, this is the
+      next step**
 - [ ] 4. Explore scheduling — publish/unpublish a node at a future date/time
 - [ ] 5. Explore drafts & versioning — edit a published page, compare versions, roll back
 - [ ] 6. Set up content permissions — restrict a content branch to a user group
@@ -161,8 +175,11 @@ versioning, who's allowed to edit what, and how pages get found on Google.
 
 ## Next step when you pick this back up
 
-Mark properties as culture-variant vs invariant, then translate Home/About content —
-see Milestone 3 step 2 above.
+Add a language switcher to the shared layout (`Views/Shared/_Layout.cshtml`) — see
+Milestone 3 step 3 above. Likely `Model.AvailableCultures()` or similar, linking to
+the current page's URL in each other culture — note the localhost-port gotcha above
+means switcher links need to point at a different PORT per culture here, which won't
+be true once real domains exist in production.
 
 Git workflow: one checklist item = one branch = one push = one PR, branched fresh off
 `main` each time. Never push straight to `main`.
