@@ -1,0 +1,23 @@
+@model CorporateHub.Models.JobApplicationViewModel
+
+@using (Html.BeginUmbracoForm("HandleSubmit", "JobApplicationSurface"))
+{
+	@Html.ValidationSummary(true)
+
+	<label>Name</label>
+	<input asp-for="Name" />
+	<span asp-validation-for="Name"></span>
+
+	<label>Email</label>
+	<input asp-for="Email" />
+	<span asp-validation-for="Email"></span>
+
+	<label>Cover Letter (optional)</label>
+	<textarea asp-for="CoverLetter"></textarea>
+
+	<label>Resume (PDF, DOC, or DOCX, max 5MB)</label>
+	<input asp-for="Resume" type="file" accept=".pdf,.doc,.docx" />
+	<span asp-validation-for="Resume"></span>
+
+	<button type="submit">Apply</button>
+}

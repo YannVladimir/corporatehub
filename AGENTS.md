@@ -290,16 +290,30 @@ data in from outside systems (APIs).
       not a real delivered email). The send is wrapped in try/catch + `ILogger` so a
       failed/unreachable SMTP server doesn't break the visitor's submission with a
       500 error — logs the failure instead of throwing.
-- [ ] 4. Add a Job Application form with file upload (CV/resume) handling —
+- [x] 4. Add a Job Application form with file upload (CV/resume) handling — done.
+      `JobApplicationViewModel` (`IFormFile Resume`), `JobApplicationSurfaceController`
+      validates extension (`.pdf`/`.doc`/`.docx`) + 5MB size cap, saves the file to
+      `App_Data/JobApplications/{guid}.ext` — **deliberately outside `wwwroot`**,
+      unlike `wwwroot/` or the Media Library, which would both give a sensitive
+      personal document a guessable, public URL. Added `/App_Data/` to `.gitignore`.
+      **Gap caught by the user and fixed:** initially only the file was saved — the
+      applicant's Name/Email/CoverLetter were validated then silently discarded, so
+      a resume on disk had no way to be matched back to who sent it. Fixed by
+      reusing the step-3 `IEmailSender` pattern, this time with `EmailMessage`'s
+      attachment-supporting constructor (`resume.OpenReadStream()` called a *second*
+      time, since the first stream — used to save to disk — was already consumed).
+      Confirmed: same expected "failed to send, no SMTP configured" log as Contact.
+- [ ] 5. Call an external API from the backend and display the data on a page —
       **not done yet, this is the next step**
-- [ ] 5. Call an external API from the backend and display the data on a page
 - [ ] 6. Build a small custom API endpoint exposing site data as JSON
 
 ## Next step when you pick this back up
 
-Add a Job Application form with file upload (CV/resume) handling — see Milestone 5
-step 4 above. New ground: `IFormFile` model binding, saving an uploaded file
-somewhere on disk (or into Media via `IMediaService`), and validating file type/size.
+Call an external API from the backend and display the data on a page — see
+Milestone 5 step 5 above. Needs a decision only the user can make: which external
+API to call (a weather API, GitHub, exchange rates, etc.) — ask before building
+anything. Mechanism: `IHttpClientFactory`, a typed/named `HttpClient`, deserialize
+the JSON response, render it in a view.
 
 Git workflow: one checklist item = one branch = one push = one PR, branched fresh off
 `main` each time. Never push straight to `main`.
