@@ -1,0 +1,6 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.JobsPage>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+
+<h1>Careers</h1>
+@await Html.PartialAsync("Partials/JobApplicationForm", new CorporateHub.Models.JobApplicationViewModel())

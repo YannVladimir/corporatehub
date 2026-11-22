@@ -483,3 +483,6 @@ umbraco-package-schema.json
 
 # Media files
 /wwwroot/media/
+
+# Private uploads (e.g. job application resumes) - never committed
+/App_Data/
