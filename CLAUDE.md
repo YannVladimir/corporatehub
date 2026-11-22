@@ -206,18 +206,35 @@ behind a login — the public-facing side of Umbraco security.
       properties for editing" — just a name), unlike User Groups' rich permission
       config. The real work happens in step 5 when a group gets used to protect
       a content branch.
-- [ ] 3. Build a registration page (Surface Controller) — **not done yet, this is
+- [x] 3. Build a registration page (Surface Controller) — done.
+      `Models/RegisterMemberViewModel.cs`, `Controllers/MemberRegistrationSurfaceController.cs`
+      (`Umbraco.Cms.Web.Website.Controllers.SurfaceController`), `Views/Partials/MemberRegistrationForm.cshtml`
+      (posts via `Html.BeginUmbracoForm("HandleRegister", "MemberRegistrationSurface")`
+      — the controller-name string drops only the literal `Controller` suffix, not
+      `SurfaceController` as a whole). `RegisterPage` Document Type, composes `SEO`,
+      child of `HomePage`.
+      **Key APIs (verified against the actual installed package XML docs, not memory
+      — several guesses were wrong at first):** `Umbraco.Cms.Core.Security.IMemberManager`
+      (real interface) + `Umbraco.Cms.Web.Common.Security.MemberSignInManager`
+      (concrete class only — no `IMemberSignInManager` interface exists in 18.3.2) +
+      `Umbraco.Cms.Core.Security.MemberIdentityUser.CreateNew(...)`. **Simplification
+      noted:** only sets the built-in member `Name`, not the custom `Full Name`/
+      `Address` properties from step 1 (writing those needs `IMemberService`, a
+      different service than the Identity-based `IMemberManager` — not pursued here).
+      **`.cs` files need a full app restart to be picked up** — unlike `.cshtml` views,
+      which Umbraco recompiles live on every request; this cost real debugging time
+      until realized.
+- [ ] 4. Build a login page + login status in the layout — **not done yet, this is
       the next step**
-- [ ] 4. Build a login page + login status in the layout
 - [ ] 5. Protect a content branch to a Member Group; verify anonymous users get redirected
 - [ ] 6. Add a profile edit / password reset page
 
 ## Next step when you pick this back up
 
-Build a registration page via a Surface Controller — see Milestone 4 step 3 above.
-First genuine custom C# controller in this project (not just `.cshtml` views) —
-`Umbraco.Cms.Web.Website.Controllers.SurfaceController`, DI-injected member
-management services, a real form POST with model binding and antiforgery.
+Build a login page + login status in the layout — see Milestone 4 step 4 above. Same
+Surface Controller pattern as registration, this time using `MemberSignInManager`'s
+sign-in (not create) methods, plus checking `Member.IsLoggedIn()` or similar in
+`_Layout.cshtml` to show logged-in-state.
 
 Git workflow: one checklist item = one branch = one push = one PR, branched fresh off
 `main` each time. Never push straight to `main`.

@@ -1,0 +1,6 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.RegisterPage>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+
+<h1>Register</h1>
+@await Html.PartialAsync("Partials/MemberRegistrationForm", new CorporateHub.Models.RegisterMemberViewModel())
