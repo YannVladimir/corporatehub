@@ -1,0 +1,24 @@
+@model CorporateHub.Models.RegisterMemberViewModel
+
+@using (Html.BeginUmbracoForm("HandleRegister", "MemberRegistrationSurface"))
+{
+	@Html.ValidationSummary(true)
+
+	<label>Full Name</label>
+	<input asp-for="FullName" />
+	<span asp-validation-for="FullName"></span>
+
+	<label>Email</label>
+	<input asp-for="Email" />
+	<span asp-validation-for="Email"></span>
+
+	<label>Password</label>
+	<input asp-for="Password" type="password" />
+	<span asp-validation-for="Password"></span>
+
+	<label>Confirm Password</label>
+	<input asp-for="ConfirmPassword" type="password" />
+	<span asp-validation-for="ConfirmPassword"></span>
+
+	<button type="submit">Register</button>
+}
