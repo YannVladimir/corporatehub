@@ -1,0 +1,6 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.ContactPage>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+
+<h1>Contact Us</h1>
+@await Html.PartialAsync("Partials/ContactForm", new CorporateHub.Models.ContactMessageViewModel())
