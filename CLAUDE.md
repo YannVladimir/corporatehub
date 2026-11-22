@@ -171,9 +171,11 @@ versioning, who's allowed to edit what, and how pages get found on Google.
       necessarily "this exact page, translated." `Model.Url(culture: "fr-FR")` +
       the hostname bindings from step 2 combine to generate the right absolute,
       cross-port URL automatically.
-- [ ] 4. Explore scheduling — publish/unpublish a node at a future date/time —
-      **not done yet, this is the next step**
+- [x] 4. Explore scheduling — done. Found the scheduling controls alongside the
+      regular publish flow; confirmed the background job flips publish state
+      automatically once the scheduled time passes, no manual action needed.
 - [ ] 5. Explore drafts & versioning — edit a published page, compare versions, roll back
+      — **not done yet, this is the next step**
 - [ ] 6. Set up content permissions — restrict a content branch to a user group
 - [ ] 7. Add the remaining SEO metadata (meta description, Open Graph tags) to
       `_Layout.cshtml` — note: the `<title>` itself is already wired from the `SEO`
@@ -181,9 +183,9 @@ versioning, who's allowed to edit what, and how pages get found on Google.
 
 ## Next step when you pick this back up
 
-Explore scheduling — see Milestone 3 step 4 above. Purely backoffice: publish/unpublish
-a node at a future date/time (look for a scheduling option alongside the regular
-Publish action) and confirm it actually goes live/offline at the scheduled moment.
+Explore drafts & versioning — see Milestone 3 step 5 above. Edit a published page
+(e.g. `Home`), save as a new draft without publishing, check the version history,
+then roll back to a prior version.
 
 Git workflow: one checklist item = one branch = one push = one PR, branched fresh off
 `main` each time. Never push straight to `main`.
