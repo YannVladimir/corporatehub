@@ -174,18 +174,20 @@ versioning, who's allowed to edit what, and how pages get found on Google.
 - [x] 4. Explore scheduling — done. Found the scheduling controls alongside the
       regular publish flow; confirmed the background job flips publish state
       automatically once the scheduled time passes, no manual action needed.
-- [ ] 5. Explore drafts & versioning — edit a published page, compare versions, roll back
-      — **not done yet, this is the next step**
-- [ ] 6. Set up content permissions — restrict a content branch to a user group
+- [x] 5. Explore drafts & versioning — done. Confirmed a plain Save creates a draft
+      version invisible to the live site until published; found the version list on
+      the "Info" tab, and used "Rollback..." to revert to a prior published version.
+- [ ] 6. Set up content permissions — restrict a content branch to a user group —
+      **not done yet, this is the next step**
 - [ ] 7. Add the remaining SEO metadata (meta description, Open Graph tags) to
       `_Layout.cshtml` — note: the `<title>` itself is already wired from the `SEO`
       composition since Milestone 1; this step just fills in what's still missing.
 
 ## Next step when you pick this back up
 
-Explore drafts & versioning — see Milestone 3 step 5 above. Edit a published page
-(e.g. `Home`), save as a new draft without publishing, check the version history,
-then roll back to a prior version.
+Set up content permissions — see Milestone 3 step 6 above. Create a restricted User
+Group (e.g. "News Editors"), limited to only the `News` branch of the content tree,
+and confirm a user in that group can't see/edit outside it.
 
 Git workflow: one checklist item = one branch = one push = one PR, branched fresh off
 `main` each time. Never push straight to `main`.
