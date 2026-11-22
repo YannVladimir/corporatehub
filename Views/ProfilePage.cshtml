@@ -1,0 +1,30 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.ProfilePage>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Core.Security;
+@using Umbraco.Cms.Core.Services;
+@inject IMemberManager MemberManager
+@inject IMemberService MemberService
+
+<h1>My Profile</h1>
+
+@if (!MemberManager.IsLoggedIn())
+{
+	<p>You need to be logged in to view this page.</p>
+}
+else
+{
+	var currentUser = await MemberManager.GetCurrentMemberAsync();
+	var members = await MemberService.GetByKeysAsync(new[] { currentUser!.Key });
+	var member = members.FirstOrDefault();
+
+	var profileModel = new CorporateHub.Models.EditProfileViewModel
+	{
+		FullName = member?.GetValue<string>("fullName") ?? string.Empty,
+		Address = member?.GetValue<string>("address") ?? string.Empty,
+	};
+
+	@await Html.PartialAsync("Partials/EditProfileForm", profileModel)
+
+	@await Html.PartialAsync("Partials/ChangePasswordForm", new CorporateHub.Models.ChangePasswordViewModel())
+}

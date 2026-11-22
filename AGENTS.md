@@ -191,7 +191,7 @@ versioning, who's allowed to edit what, and how pages get found on Google.
 domain-based routing (ports standing in for domains locally), scheduling, drafts/
 versioning, content permissions, and full SEO meta tags.
 
-## Milestone 4 — current focus: Members & Auth
+## Milestone 4 — complete: Members & Auth
 
 Goal: give site *visitors* (not backoffice editors) accounts, and gate some content
 behind a login — the public-facing side of Umbraco security.
@@ -239,19 +239,45 @@ behind a login — the public-facing side of Umbraco security.
       anonymous visitor redirected to `/login`; a `Customers`-group member granted
       access after logging in. Protection cascades down to `Services`'s children
       automatically (not just the one node).
-- [ ] 6. Add a profile edit / password reset page — **not done yet, this is the
-      next step**
+- [x] 6. Add a profile edit / password reset page — done. Scoped to a profile edit
+      form (`Full Name`/`Address`, finally using `IMemberService` — the content-style
+      API that closes the gap from step 3, since `IMemberManager` alone can't write
+      custom member properties) + an authenticated "change password" form (old + new
+      password, using the plain inherited ASP.NET Core Identity `ChangePasswordAsync`
+      — deliberately not Umbraco's own `IPasswordChanger<T>`, which turned out to be
+      for a backoffice *admin* resetting someone else's password, not self-service).
+      A true anonymous "forgot password" emailed-token flow is deferred — needs email
+      sending, which isn't wired up until Milestone 5. `ProfilePage` checks
+      `MemberManager.IsLoggedIn()` inline (not Public Access/group-gated, since any
+      logged-in member regardless of group should reach their own profile).
+      **Razor gotcha hit:** an `else { }` block whose content starts immediately with
+      a nested `@{ }` (no markup first) errors — Razor already treats that `else { }`
+      as a code block, so the inner `@{` is invalid/redundant; just write the C#
+      directly with no wrapper.
+
+**Milestone 4 (Members & Auth) is fully complete.** Member Type/Groups, registration,
+login with status in the layout, content gated to a Member Group, and self-service
+profile editing + password change — all via hand-written Surface Controllers, the
+first real custom C# in the project.
+
+## Milestone 5 — current focus: Forms & Integrations
+
+Goal: two-way traffic — letting visitors send data in (contact/job forms) and pulling
+data in from outside systems (APIs).
+
+- [ ] 1. Build a Contact form (custom Razor form + Surface Controller, same pattern
+      as Milestone 4's forms) — **not done yet, this is the next step**
+- [ ] 2. Add server-side (and client-side) validation to the form
+- [ ] 3. Wire up email notifications on submit (SMTP, `IEmailSender`)
+- [ ] 4. Add a Job Application form with file upload (CV/resume) handling
+- [ ] 5. Call an external API from the backend and display the data on a page
+- [ ] 6. Build a small custom API endpoint exposing site data as JSON
 
 ## Next step when you pick this back up
 
-Add a profile edit / password reset page — see Milestone 4 step 6 above (the last
-Milestone 4 item). Scoping decision to make explicit: a true "forgot password" flow
-needs emailed reset tokens, and email sending isn't wired up until Milestone 5 (Forms
-& integrations). So this step should cover: (a) a profile edit page (member updates
-their own `Full Name`/`Address` — finally using `IMemberService`, the content-style API,
-since `IMemberManager` alone can't write custom member properties, a gap noted back in
-step 3), and (b) an authenticated "change password" form (old + new password, while
-already logged in) rather than the full anonymous emailed-token reset flow.
+Build a Contact form — see Milestone 5 step 1 above. Same Surface Controller pattern
+as every Milestone 4 form; the new parts come in steps 2-3 (richer validation, actual
+email sending via SMTP).
 
 Git workflow: one checklist item = one branch = one push = one PR, branched fresh off
 `main` each time. Never push straight to `main`.
