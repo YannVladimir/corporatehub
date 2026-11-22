@@ -1,0 +1,20 @@
+@model CorporateHub.Models.ContactMessageViewModel
+
+@using (Html.BeginUmbracoForm("HandleSubmit", "ContactSurface"))
+{
+	@Html.ValidationSummary(true)
+
+	<label>Name</label>
+	<input asp-for="Name" />
+	<span asp-validation-for="Name"></span>
+
+	<label>Email</label>
+	<input asp-for="Email" />
+	<span asp-validation-for="Email"></span>
+
+	<label>Message</label>
+	<textarea asp-for="Message"></textarea>
+	<span asp-validation-for="Message"></span>
+
+	<button type="submit">Send</button>
+}

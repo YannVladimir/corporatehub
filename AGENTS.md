@@ -265,19 +265,35 @@ first real custom C# in the project.
 Goal: two-way traffic — letting visitors send data in (contact/job forms) and pulling
 data in from outside systems (APIs).
 
-- [ ] 1. Build a Contact form (custom Razor form + Surface Controller, same pattern
-      as Milestone 4's forms) — **not done yet, this is the next step**
-- [ ] 2. Add server-side (and client-side) validation to the form
-- [ ] 3. Wire up email notifications on submit (SMTP, `IEmailSender`)
+- [x] 1. Build a Contact form — done. `Models/ContactMessageViewModel.cs`,
+      `Controllers/ContactSurfaceController.cs`, `Views/Partials/ContactForm.cshtml`,
+      `ContactPage` Document Type + view. Deliberately no email/persistence yet — a
+      successful submit just redirects, data is discarded (that's step 3).
+      **Gotcha hit:** a nav link showing `#` instead of a real URL meant the node
+      wasn't actually published yet — same root cause as the `News`-not-published
+      issue back in Milestone 2.
+- [x] 2. Add server-side (and client-side) validation to the form — done (bundled
+      into the same commit as step 1, since both were worked on in one sitting).
+      Server-side was already working via `[Required]`/`[EmailAddress]` + `ModelState.IsValid`.
+      Client-side needed `_Layout.cshtml` to load jQuery + jQuery Validation +
+      the unobtrusive adapter (CDN) — the `data-val="true"` attributes `asp-for`/
+      `asp-validation-for` generate were already there but inert without these
+      scripts. Verified via DevTools Network tab: submitting an empty form fires
+      **zero** requests, confirming the browser blocks it before any round trip.
+      Since every form (Contact, Register, Login, Profile) shares this one layout,
+      all of them gained client-side validation at once.
+- [ ] 3. Wire up email notifications on submit (SMTP, `IEmailSender`) — **not done
+      yet, this is the next step**
 - [ ] 4. Add a Job Application form with file upload (CV/resume) handling
 - [ ] 5. Call an external API from the backend and display the data on a page
 - [ ] 6. Build a small custom API endpoint exposing site data as JSON
 
 ## Next step when you pick this back up
 
-Build a Contact form — see Milestone 5 step 1 above. Same Surface Controller pattern
-as every Milestone 4 form; the new parts come in steps 2-3 (richer validation, actual
-email sending via SMTP).
+Wire up email notifications on submit — see Milestone 5 step 3 above. Needs SMTP
+configuration (appsettings.json) + `IEmailSender`/`EmailSenderOptions` injected into
+`ContactSurfaceController.HandleSubmit`, actually sending the submitted Name/Email/
+Message somewhere instead of discarding it.
 
 Git workflow: one checklist item = one branch = one push = one PR, branched fresh off
 `main` each time. Never push straight to `main`.
