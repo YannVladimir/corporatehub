@@ -164,9 +164,15 @@ versioning, who's allowed to edit what, and how pages get found on Google.
       (`Page Sections`) correctly stay invariant — variance for block content would
       need to be set on the Element Type itself, not the top-level property; noted
       as a stretch goal, not pursued.
-- [ ] 3. Add a language switcher to the shared layout — **not done yet, this is the
-      next step**
-- [ ] 4. Explore scheduling — publish/unpublish a node at a future date/time
+- [x] 3. Add a language switcher to the shared layout — done, in `_Layout.cshtml`'s
+      `<header>`. Deliberately based on `Model.Root()` (always `Home`) rather than
+      the current page, since most Document Types besides `Home`/`About` were never
+      made culture-variant — so it always links to that language's Home, not
+      necessarily "this exact page, translated." `Model.Url(culture: "fr-FR")` +
+      the hostname bindings from step 2 combine to generate the right absolute,
+      cross-port URL automatically.
+- [ ] 4. Explore scheduling — publish/unpublish a node at a future date/time —
+      **not done yet, this is the next step**
 - [ ] 5. Explore drafts & versioning — edit a published page, compare versions, roll back
 - [ ] 6. Set up content permissions — restrict a content branch to a user group
 - [ ] 7. Add the remaining SEO metadata (meta description, Open Graph tags) to
@@ -175,11 +181,9 @@ versioning, who's allowed to edit what, and how pages get found on Google.
 
 ## Next step when you pick this back up
 
-Add a language switcher to the shared layout (`Views/Shared/_Layout.cshtml`) — see
-Milestone 3 step 3 above. Likely `Model.AvailableCultures()` or similar, linking to
-the current page's URL in each other culture — note the localhost-port gotcha above
-means switcher links need to point at a different PORT per culture here, which won't
-be true once real domains exist in production.
+Explore scheduling — see Milestone 3 step 4 above. Purely backoffice: publish/unpublish
+a node at a future date/time (look for a scheduling option alongside the regular
+Publish action) and confirm it actually goes live/offline at the scheduled moment.
 
 Git workflow: one checklist item = one branch = one push = one PR, branched fresh off
 `main` each time. Never push straight to `main`.
