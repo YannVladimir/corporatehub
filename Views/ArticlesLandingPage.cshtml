@@ -1,0 +1,31 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.ArticlesLandingPage>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+	var categories = Umbraco.ContentAtRoot().OfType<ContentModels.Category>().ToList();
+	var selectedCategoryId = Context.Request.Query["category"].ToString();
+
+	var articles = Model.Children<ContentModels.Article>();
+	if (int.TryParse(selectedCategoryId, out var categoryId))
+	{
+		articles = articles.Where(a => a.Categories.Any(c => c.Id == categoryId));
+	}
+}
+
+<h1>@Model.Heading</h1>
+<p>@Model.IntroText</p>
+
+<nav>
+	<a href="@Model.Url()">All</a>
+	@foreach (var category in categories)
+	{
+		<a href="@Model.Url()?category=@category.Id">@category.Name</a>
+	}
+</nav>
+
+<ul>
+	@foreach (var article in articles)
+	{
+		<li><a href="@article.Url()">@article.Heading</a></li>
+	}
+</ul>

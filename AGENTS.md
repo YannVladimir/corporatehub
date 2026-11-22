@@ -85,9 +85,39 @@ not copied.
 Compositions reused across four page types, a shared layout, and a tree-driven nested
 nav — all built by hand, not from a starter kit.
 
+## Milestone 2 — current focus: Dynamic Content
+
+Goal: give the marketing team an ongoing stream of content (articles/news) instead of
+fixed one-off pages — the listing/detail/tree pattern, Block List for structured body
+content, and search/pagination once volume grows.
+
+- [x] 1. Create `ArticlesLandingPage` (listing) + `Article` (detail) Document Types
+      — done. Simple Richtext `Body` for now (deliberate choice — block-based body
+      is its own step, #3 below, so this step stayed focused on listing/detail/tree
+      mechanics). Both compose `SEO`. Tree: `Home > News > My first article` (+ 1 more).
+      `ArticlesLandingPage.cshtml` lists children via `Model.Children<ContentModels.Article>()`.
+- [x] 2. Add Categories & Tags and filter articles by them — done. `Category` is a
+      bare Document Type (no template, no custom properties — the built-in `Name`
+      suffices), "Allow at root" so instances live as root-level siblings of `Home`
+      (keeps them out of the nav, since `Navigation.cshtml` only walks `Home`'s own
+      children). A `Category Picker` Data Type (Content Picker / MultiNodeTreePicker,
+      "Accepted types" restricted to `Category`) powers `Article.Categories`.
+      `ArticlesLandingPage.cshtml` filters via `Umbraco.ContentAtRoot()` +
+      `Context.Request.Query["category"]`.
+- [x] 3. Convert `Article`'s `Body` to a Block List property — done. `Text Block`
+      Element Type (one `Text` Richtext property) + `Article Body Blocks` Data Type
+      (Block List, available block: Text Block). Umbraco does NOT auto-create a
+      per-Element-Type render partial (unlike full page templates) — had to hand-write
+      `Views/Partials/blocklist/Components/textBlock.cshtml`, rendered from
+      `Article.cshtml` via `@await Html.PartialAsync("blocklist/default", Model.Body)`.
+- [ ] 4. Build a Block Grid property for flexible, marketing-editable page sections —
+      **not done yet, this is the next step**
+- [ ] 5. Extract a reusable article teaser card as a Partial View
+- [ ] 6. Real pagination on the article listing (currently lists all children, unpaged)
+- [ ] 7. Site search across articles and pages (Examine)
+
 ## Next step when you pick this back up
 
-Start **Milestone 2 — Dynamic Content**: Document Types, Element Types, Block List/
-Grid, and search/pagination (see Curriculum roadmap above). First concrete step:
-create an `Article`/`News` Document Type with a block-based body, plus Categories/
-Tags so articles can be filtered.
+Build a Block Grid property — see Milestone 2 step 4 above. Likely on `HomePage`
+(flexible marketing-editable sections), reusing the `Text Block` Element Type plus
+at least one new one (e.g. an "Image Block" or "Call to Action" block).

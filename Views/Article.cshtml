@@ -1,0 +1,12 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Article>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+<h1>@Model.Heading</h1>
+@await Html.PartialAsync("blocklist/default", Model.Body)
+
+<ul>
+	@foreach (var category in Model.Categories)
+	{
+		<li>@category.Name</li>
+	}
+</ul>
