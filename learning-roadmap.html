@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CorporateHub — Umbraco Learning Roadmap</title>
+<style>
+  :root{
+    --bg: #f6f7fb;
+    --card: #ffffff;
+    --border: #e3e6ee;
+    --text: #1d2433;
+    --text-soft: #5b6476;
+    --accent: #3457d5;
+    --accent-soft: #eef1fd;
+    --done: #1f9d55;
+    --done-bg: #e7f7ee;
+    --current: #b06b00;
+    --current-bg: #fff4e0;
+    --optional: #7a4fd6;
+    --optional-bg: #f1ebfc;
+    --not-started-bg: #eef0f4;
+    --not-started: #6b7280;
+  }
+  *{ box-sizing: border-box; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+  }
+  .wrap{
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+  header{
+    margin-bottom: 28px;
+  }
+  h1{
+    font-size: 1.9rem;
+    margin: 0 0 6px;
+    letter-spacing: -0.02em;
+  }
+  .subtitle{
+    color: var(--text-soft);
+    font-size: 0.98rem;
+    margin: 0 0 18px;
+    max-width: 640px;
+  }
+  .chips{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+  .chip{
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+  .infographic{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 24px;
+    box-shadow: 0 1px 2px rgba(20,25,40,0.04);
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 28px;
+    align-items: center;
+  }
+  .hero-stat{
+    text-align: center;
+    border-right: 1px solid var(--border);
+    padding-right: 24px;
+  }
+  .hero-value{
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .hero-label{
+    margin-top: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .hero-sub{
+    margin-top: 2px;
+    font-size: 0.76rem;
+    color: var(--text-soft);
+  }
+  .meter-list{
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .meter-row{
+    display: grid;
+    grid-template-columns: 148px 1fr 40px;
+    align-items: center;
+    gap: 10px;
+  }
+  .meter-row.optional{ opacity: 0.6; }
+  .meter-label{
+    font-size: 0.78rem;
+    color: var(--text-soft);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .meter-label em{ font-style: normal; font-weight: 400; }
+  .meter-track{
+    display:block;
+    height: 10px;
+    background: #cde2fb;
+    border-radius: 0 4px 4px 0;
+    overflow: hidden;
+  }
+  .meter-fill{
+    display:block;
+    height: 100%;
+    width: 0%;
+    background: #2a78d6;
+    border-radius: 0 4px 4px 0;
+    transition: width 0.25s ease;
+  }
+  .meter-value{
+    font-size: 0.78rem;
+    color: var(--text-soft);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  @media (max-width: 640px){
+    .infographic{ grid-template-columns: 1fr; }
+    .hero-stat{ border-right: none; border-bottom: 1px solid var(--border); padding-right: 0; padding-bottom: 16px; }
+    .meter-row{ grid-template-columns: 112px 1fr 36px; }
+  }
+
+  .milestone{
+    margin-top: 18px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(20,25,40,0.04);
+    overflow: hidden;
+  }
+  details > summary{
+    list-style: none;
+    cursor: pointer;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  details > summary::-webkit-details-marker{ display:none; }
+  summary .chevron{
+    margin-left: auto;
+    color: var(--text-soft);
+    font-size: 0.8rem;
+    transition: transform 0.2s ease;
+  }
+  details[open] summary .chevron{ transform: rotate(90deg); }
+
+  .m-num{
+    flex: 0 0 auto;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent);
+    display:flex; align-items:center; justify-content:center;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .m-title{
+    font-weight: 700;
+    font-size: 1.02rem;
+    margin-right: 4px;
+  }
+  .m-progress{
+    font-size: 0.8rem;
+    color: var(--text-soft);
+    background: var(--not-started-bg);
+    padding: 2px 9px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .m-progress.all-done{
+    background: var(--done-bg);
+    color: var(--done);
+  }
+  .badge{
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 3px 9px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .badge.optional{ background: var(--optional-bg); color: var(--optional); }
+
+  .m-body{
+    padding: 0 20px 18px 62px;
+  }
+  .m-desc{
+    color: var(--text-soft);
+    font-size: 0.88rem;
+    margin: -4px 0 14px;
+  }
+  ul.checklist{
+    list-style: none;
+    margin: 0; padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  ul.checklist li{
+    border-radius: 8px;
+  }
+  ul.checklist li.current-step{
+    background: var(--current-bg);
+    outline: 1px solid #f0d9a8;
+  }
+  .checklist label{
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 7px 10px;
+    cursor: pointer;
+    font-size: 0.92rem;
+  }
+  .checklist input[type="checkbox"]{
+    margin-top: 3px;
+    width: 16px; height: 16px;
+    accent-color: var(--accent);
+    flex: 0 0 auto;
+  }
+  .checklist .item-text{ flex: 1; }
+  .checklist label.checked .item-text{
+    color: var(--text-soft);
+    text-decoration: line-through;
+    text-decoration-color: var(--border);
+  }
+  .here-pill{
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--current);
+    background: #fff;
+    border: 1px solid #f0d9a8;
+    padding: 1px 8px;
+    border-radius: 999px;
+    vertical-align: middle;
+  }
+  footer{
+    margin-top: 30px;
+    text-align: center;
+    color: var(--text-soft);
+    font-size: 0.8rem;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>CorporateHub — Umbraco Learning Roadmap</h1>
+    <p class="subtitle">
+      A sequenced plan for learning Umbraco CMS end-to-end through one project: a corporate
+      site a marketing team runs entirely through the backoffice. Each milestone builds on the
+      last, in order — this isn't a deadline, it's a map of where you are and what's next.
+    </p>
+    <div class="chips">
+      <span class="chip">Umbraco 18.3.2</span>
+      <span class="chip">.NET 10</span>
+      <span class="chip">ASP.NET Core + Razor</span>
+      <span class="chip">SQLite</span>
+    </div>
+
+    <section class="infographic" aria-label="Overall learning progress">
+      <div class="hero-stat">
+        <div class="hero-value" id="heroPct">0%</div>
+        <div class="hero-label">Overall progress</div>
+        <div class="hero-sub" id="heroSub">0 of 51 core steps</div>
+      </div>
+      <div class="meter-list">
+        <div class="meter-row" data-meter-for="m1">
+          <span class="meter-label">M1 · Foundation</span>
+          <span class="meter-track"><span class="meter-fill"></span></span>
+          <span class="meter-value">0%</span>
+        </div>
+        <div class="meter-row" data-meter-for="m2">
+          <span class="meter-label">M2 · Dynamic Content</span>
+          <span class="meter-track"><span class="meter-fill"></span></span>
+          <span class="meter-value">0%</span>
+        </div>
+        <div class="meter-row" data-meter-for="m3">
+          <span class="meter-label">M3 · Advanced Content</span>
+          <span class="meter-track"><span class="meter-fill"></span></span>
+          <span class="meter-value">0%</span>
+        </div>
+        <div class="meter-row" data-meter-for="m4">
+          <span class="meter-label">M4 · Members &amp; Auth</span>
+          <span class="meter-track"><span class="meter-fill"></span></span>
+          <span class="meter-value">0%</span>
+        </div>
+        <div class="meter-row" data-meter-for="m5">
+          <span class="meter-label">M5 · Forms &amp; Integrations</span>
+          <span class="meter-track"><span class="meter-fill"></span></span>
+          <span class="meter-value">0%</span>
+        </div>
+        <div class="meter-row" data-meter-for="m6">
+          <span class="meter-label">M6 · Custom Dev</span>
+          <span class="meter-track"><span class="meter-fill"></span></span>
+          <span class="meter-value">0%</span>
+        </div>
+        <div class="meter-row" data-meter-for="m7">
+          <span class="meter-label">M7 · Pro Practices</span>
+          <span class="meter-track"><span class="meter-fill"></span></span>
+          <span class="meter-value">0%</span>
+        </div>
+        <div class="meter-row optional" data-meter-for="m8">
+          <span class="meter-label">M8 · Headless <em>(optional)</em></span>
+          <span class="meter-track"><span class="meter-fill"></span></span>
+          <span class="meter-value">0%</span>
+        </div>
+      </div>
+    </section>
+  </header>
+
+  <!-- MILESTONE 1 -->
+  <section class="milestone" data-milestone="m1">
+    <details>
+      <summary>
+        <span class="m-num">1</span>
+        <span class="m-title">Foundation</span>
+        <span class="m-progress" data-progress-for="m1">0/9</span>
+        <span class="chevron">▶</span>
+      </summary>
+      <div class="m-body">
+        <p class="m-desc">A running Umbraco site with real Document Types and dynamic Razor rendering — built deliberately, not a starter kit, so content ↔ template wiring is understood, not copied.</p>
+        <ul class="checklist">
+          <li><label><input type="checkbox" data-id="m1-1" checked><span class="item-text">Confirm Umbraco version + .NET SDK</span></label></li>
+          <li><label><input type="checkbox" data-id="m1-2" checked><span class="item-text">Update <code>Umbraco.Templates</code> to latest (18.3.2)</span></label></li>
+          <li><label><input type="checkbox" data-id="m1-3" checked><span class="item-text">Scaffold the <code>CorporateHub</code> solution (<code>dotnet new umbraco</code>, SQLite)</span></label></li>
+          <li><label><input type="checkbox" data-id="m1-4" checked><span class="item-text">First run: install wizard — <code>dotnet run</code>, choose SQLite, create admin user, land in <code>/umbraco</code></span></label></li>
+          <li><label><input type="checkbox" data-id="m1-5" checked><span class="item-text">Walk the backoffice sections — Content tree, Media library, Settings, Users</span></label></li>
+          <li><label><input type="checkbox" data-id="m1-6" checked><span class="item-text">Create a <strong>HomePage</strong> Document Type, with a Compositions-based reusable "SEO" group</span></label></li>
+          <li><label><input type="checkbox" data-id="m1-7" checked><span class="item-text">Create <strong>AboutPage</strong> and <strong>ServicePage</strong> Document Types, reusing the SEO composition</span></label></li>
+          <li><label><input type="checkbox" data-id="m1-8" checked><span class="item-text">Build a shared Razor layout + Homepage template rendering real content from the tree</span></label></li>
+          <li><label><input type="checkbox" data-id="m1-9" checked><span class="item-text">Dynamic navigation menu driven by the content tree</span></label></li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- MILESTONE 2 -->
+  <section class="milestone" data-milestone="m2">
+    <details open>
+      <summary>
+        <span class="m-num">2</span>
+        <span class="m-title">Dynamic Content</span>
+        <span class="m-progress" data-progress-for="m2">0/7</span>
+        <span class="chevron">▶</span>
+      </summary>
+      <div class="m-body">
+        <p class="m-desc">Move from static pages to content that the marketing team can keep adding to — articles, reusable content blocks, and a way for visitors to find things.</p>
+        <ul class="checklist">
+          <li class="current-step"><label><input type="checkbox" data-id="m2-1"><span class="item-text">Create an <strong>Article/News</strong> Document Type (block-based body content)<span class="here-pill">YOU ARE HERE</span></span></label></li>
+          <li><label><input type="checkbox" data-id="m2-2"><span class="item-text">Add Categories &amp; Tags (Data Type/picker) and filter articles by them</span></label></li>
+          <li><label><input type="checkbox" data-id="m2-3"><span class="item-text">Build an Element Type + <strong>Block List</strong> property (e.g. a reusable "Call to Action" block)</span></label></li>
+          <li><label><input type="checkbox" data-id="m2-4"><span class="item-text">Build a <strong>Block Grid</strong> property for flexible, marketing-editable page sections</span></label></li>
+          <li><label><input type="checkbox" data-id="m2-5"><span class="item-text">Extract reusable Razor partial views/components (e.g. an article teaser card)</span></label></li>
+          <li><label><input type="checkbox" data-id="m2-6"><span class="item-text">Article listing page with pagination over <code>IPublishedContent</code></span></label></li>
+          <li><label><input type="checkbox" data-id="m2-7"><span class="item-text">Site search across articles and pages (Examine)</span></label></li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- MILESTONE 3 -->
+  <section class="milestone" data-milestone="m3">
+    <details>
+      <summary>
+        <span class="m-num">3</span>
+        <span class="m-title">Advanced Content</span>
+        <span class="m-progress" data-progress-for="m3">0/7</span>
+        <span class="chevron">▶</span>
+      </summary>
+      <div class="m-body">
+        <p class="m-desc">The editorial realities of running a real site: multiple languages, scheduling, versioning, who's allowed to edit what, and how pages get found on Google.</p>
+        <ul class="checklist">
+          <li><label><input type="checkbox" data-id="m3-1"><span class="item-text">Enable multilingual setup — add EN (default), FR, RW languages in Settings</span></label></li>
+          <li><label><input type="checkbox" data-id="m3-2"><span class="item-text">Mark properties as culture-variant vs invariant; translate Home/About content</span></label></li>
+          <li><label><input type="checkbox" data-id="m3-3"><span class="item-text">Add a language switcher to the shared layout</span></label></li>
+          <li><label><input type="checkbox" data-id="m3-4"><span class="item-text">Explore scheduling — publish/unpublish a node at a future date/time</span></label></li>
+          <li><label><input type="checkbox" data-id="m3-5"><span class="item-text">Explore drafts &amp; versioning — edit a published page, compare versions, roll back</span></label></li>
+          <li><label><input type="checkbox" data-id="m3-6"><span class="item-text">Set up content permissions — restrict a content branch to a user group</span></label></li>
+          <li><label><input type="checkbox" data-id="m3-7"><span class="item-text">Add SEO metadata (title/description, Open Graph) rendered from the SEO composition</span></label></li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- MILESTONE 4 -->
+  <section class="milestone" data-milestone="m4">
+    <details>
+      <summary>
+        <span class="m-num">4</span>
+        <span class="m-title">Members &amp; Auth</span>
+        <span class="m-progress" data-progress-for="m4">0/6</span>
+        <span class="chevron">▶</span>
+      </summary>
+      <div class="m-body">
+        <p class="m-desc">Give site visitors (not backoffice editors) accounts, and gate some content behind a login — the public-facing side of Umbraco security.</p>
+        <ul class="checklist">
+          <li><label><input type="checkbox" data-id="m4-1"><span class="item-text">Create a Member Type (e.g. "Website Member") with custom properties</span></label></li>
+          <li><label><input type="checkbox" data-id="m4-2"><span class="item-text">Create Member Groups (e.g. "Customers", "Partners")</span></label></li>
+          <li><label><input type="checkbox" data-id="m4-3"><span class="item-text">Build a registration page (Surface Controller)</span></label></li>
+          <li><label><input type="checkbox" data-id="m4-4"><span class="item-text">Build a login page + login status in the layout</span></label></li>
+          <li><label><input type="checkbox" data-id="m4-5"><span class="item-text">Protect a content branch to a Member Group; verify anonymous users get redirected</span></label></li>
+          <li><label><input type="checkbox" data-id="m4-6"><span class="item-text">Add a profile edit / password reset page</span></label></li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- MILESTONE 5 -->
+  <section class="milestone" data-milestone="m5">
+    <details>
+      <summary>
+        <span class="m-num">5</span>
+        <span class="m-title">Forms &amp; Integrations</span>
+        <span class="m-progress" data-progress-for="m5">0/6</span>
+        <span class="chevron">▶</span>
+      </summary>
+      <div class="m-body">
+        <p class="m-desc">Two-way traffic: letting visitors send data in (contact/job forms) and pulling data in from outside systems (APIs).</p>
+        <ul class="checklist">
+          <li><label><input type="checkbox" data-id="m5-1"><span class="item-text">Build a Contact form (Umbraco Forms, or a custom Razor form + Surface Controller)</span></label></li>
+          <li><label><input type="checkbox" data-id="m5-2"><span class="item-text">Add server-side (and client-side) validation to the form</span></label></li>
+          <li><label><input type="checkbox" data-id="m5-3"><span class="item-text">Wire up email notifications on submit (SMTP, <code>IEmailSender</code>)</span></label></li>
+          <li><label><input type="checkbox" data-id="m5-4"><span class="item-text">Add a Job Application form with file upload (CV/resume) handling</span></label></li>
+          <li><label><input type="checkbox" data-id="m5-5"><span class="item-text">Call an external API from the backend and display the data on a page</span></label></li>
+          <li><label><input type="checkbox" data-id="m5-6"><span class="item-text">Build a small custom API endpoint exposing site data as JSON</span></label></li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- MILESTONE 6 -->
+  <section class="milestone" data-milestone="m6">
+    <details>
+      <summary>
+        <span class="m-num">6</span>
+        <span class="m-title">Custom Development</span>
+        <span class="m-progress" data-progress-for="m6">0/8</span>
+        <span class="chevron">▶</span>
+      </summary>
+      <div class="m-body">
+        <p class="m-desc">The skills that separate "I followed a tutorial" from "I can work in an existing Umbraco codebase" — the .NET-developer side of Umbraco.</p>
+        <ul class="checklist">
+          <li><label><input type="checkbox" data-id="m6-1"><span class="item-text">Build a custom Surface Controller for an interactive feature (e.g. newsletter signup)</span></label></li>
+          <li><label><input type="checkbox" data-id="m6-2"><span class="item-text">Build a Razor ViewComponent for a reusable, self-contained widget</span></label></li>
+          <li><label><input type="checkbox" data-id="m6-3"><span class="item-text">Register and consume a custom service via Dependency Injection</span></label></li>
+          <li><label><input type="checkbox" data-id="m6-4"><span class="item-text">Use core Umbraco Services (<code>IContentService</code>, <code>IMediaService</code>) to read/write content from code</span></label></li>
+          <li><label><input type="checkbox" data-id="m6-5"><span class="item-text">Hook into a Notification/event (e.g. <code>ContentPublishedNotification</code>) to run custom logic</span></label></li>
+          <li><label><input type="checkbox" data-id="m6-6"><span class="item-text">Build a custom backoffice dashboard for the marketing team's section</span></label></li>
+          <li><label><input type="checkbox" data-id="m6-7"><span class="item-text">Build a custom property editor (e.g. a simple color swatch picker)</span></label></li>
+          <li><label><input type="checkbox" data-id="m6-8"><span class="item-text">Add a custom EF Core table alongside Umbraco's schema (e.g. form submission log) and migrate it</span></label></li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- MILESTONE 7 -->
+  <section class="milestone" data-milestone="m7">
+    <details>
+      <summary>
+        <span class="m-num">7</span>
+        <span class="m-title">Professional Practices</span>
+        <span class="m-progress" data-progress-for="m7">0/8</span>
+        <span class="chevron">▶</span>
+      </summary>
+      <div class="m-body">
+        <p class="m-desc">Turning a learning project into something that behaves like a real team codebase: version control discipline, observability, testing, and getting it live.</p>
+        <ul class="checklist">
+          <li><label><input type="checkbox" data-id="m7-1"><span class="item-text">Initialize Git properly; review <code>.gitignore</code> for Umbraco-specific paths</span></label></li>
+          <li><label><input type="checkbox" data-id="m7-2"><span class="item-text">Set up environment configuration (Development vs Production appsettings, secrets)</span></label></li>
+          <li><label><input type="checkbox" data-id="m7-3"><span class="item-text">Review/extend Serilog logging (structured logging, log levels)</span></label></li>
+          <li><label><input type="checkbox" data-id="m7-4"><span class="item-text">Write unit/integration tests for a custom service or controller</span></label></li>
+          <li><label><input type="checkbox" data-id="m7-5"><span class="item-text">Add caching for an expensive query (output caching / in-memory cache)</span></label></li>
+          <li><label><input type="checkbox" data-id="m7-6"><span class="item-text">Security pass — HTTPS, backoffice user security, anti-forgery on forms</span></label></li>
+          <li><label><input type="checkbox" data-id="m7-7"><span class="item-text">Set up a CI/CD pipeline (e.g. GitHub Actions build)</span></label></li>
+          <li><label><input type="checkbox" data-id="m7-8"><span class="item-text">Deploy the site (e.g. Azure App Service) and confirm the SQLite/production data story</span></label></li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- MILESTONE 8 (optional) -->
+  <section class="milestone" data-milestone="m8">
+    <details>
+      <summary>
+        <span class="m-num">8</span>
+        <span class="m-title">Headless Rebuild</span>
+        <span class="badge optional">Optional</span>
+        <span class="m-progress" data-progress-for="m8">0/5</span>
+        <span class="chevron">▶</span>
+      </summary>
+      <div class="m-body">
+        <p class="m-desc">Later, once fundamentals are solid: rebuild the frontend decoupled from Razor, using Umbraco as a pure content API.</p>
+        <ul class="checklist">
+          <li><label><input type="checkbox" data-id="m8-1"><span class="item-text">Enable the Umbraco Content Delivery API</span></label></li>
+          <li><label><input type="checkbox" data-id="m8-2"><span class="item-text">Explore Delivery API endpoints against existing content</span></label></li>
+          <li><label><input type="checkbox" data-id="m8-3"><span class="item-text">Scaffold a React frontend consuming the Delivery API</span></label></li>
+          <li><label><input type="checkbox" data-id="m8-4"><span class="item-text">Rebuild the Homepage + one content type's rendering in React</span></label></li>
+          <li><label><input type="checkbox" data-id="m8-5"><span class="item-text">Compare traditional MVC vs headless — tradeoffs discussion</span></label></li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <footer>Checkbox state is saved locally in this browser. Re-open this same file any time to pick up where you left off.</footer>
+</div>
+
+<script>
+(function(){
+  var STORAGE_PREFIX = "corporatehub-roadmap:";
+  var coreMilestones = ["m1","m2","m3","m4","m5","m6","m7"];
+
+  function readState(id, fallback){
+    try{
+      var v = localStorage.getItem(STORAGE_PREFIX + id);
+      if(v === null) return fallback;
+      return v === "1";
+    }catch(e){ return fallback; }
+  }
+  function writeState(id, checked){
+    try{ localStorage.setItem(STORAGE_PREFIX + id, checked ? "1" : "0"); }catch(e){}
+  }
+
+  var checkboxes = Array.prototype.slice.call(document.querySelectorAll('input[type="checkbox"][data-id]'));
+
+  checkboxes.forEach(function(cb){
+    var id = cb.getAttribute('data-id');
+    cb.checked = readState(id, cb.checked);
+    syncLabel(cb);
+    cb.addEventListener('change', function(){
+      writeState(id, cb.checked);
+      syncLabel(cb);
+      recalc();
+    });
+  });
+
+  function syncLabel(cb){
+    var label = cb.closest('label');
+    if(cb.checked) label.classList.add('checked');
+    else label.classList.remove('checked');
+  }
+
+  function recalc(){
+    var totalCore = 0, doneCore = 0;
+    document.querySelectorAll('.milestone').forEach(function(section){
+      var key = section.getAttribute('data-milestone');
+      var boxes = section.querySelectorAll('input[type="checkbox"][data-id]');
+      var done = 0;
+      boxes.forEach(function(b){ if(b.checked) done++; });
+      var total = boxes.length;
+      var pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+      var badge = section.querySelector('[data-progress-for="' + key + '"]');
+      if(badge){
+        badge.textContent = done + "/" + total;
+        badge.classList.toggle('all-done', done === total && total > 0);
+      }
+
+      var meterRow = document.querySelector('.meter-row[data-meter-for="' + key + '"]');
+      if(meterRow){
+        meterRow.querySelector('.meter-fill').style.width = pct + "%";
+        meterRow.querySelector('.meter-value').textContent = pct + "%";
+      }
+
+      if(coreMilestones.indexOf(key) !== -1){
+        totalCore += total;
+        doneCore += done;
+      }
+    });
+    var overallPct = totalCore > 0 ? Math.round((doneCore / totalCore) * 100) : 0;
+    document.getElementById('heroPct').textContent = overallPct + "%";
+    document.getElementById('heroSub').textContent = doneCore + " of " + totalCore + " core steps";
+  }
+
+  recalc();
+})();
+</script>
+</body>
+</html>

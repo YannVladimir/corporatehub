@@ -1,0 +1,19 @@
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>@(Model.Value<string>("browserTitle"))</title>
+</head>
+<body>
+	<header>
+		<partial name="Partials/Navigation" model="Model" />
+	</header>
+
+	<main>
+		@RenderBody()
+	</main>
+
+	<footer></footer>
+</body>
+</html>

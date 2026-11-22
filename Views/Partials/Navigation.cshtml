@@ -1,0 +1,23 @@
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IPublishedContent>
+@{
+	var topLevelItems = Model.Root().Children();
+}
+<nav>
+	<ul>
+		@foreach (var item in topLevelItems)
+		{
+			<li>
+				<a href="@item.Url()">@item.Name</a>
+				@if (item.Children().Any())
+				{
+					<ul>
+						@foreach (var child in item.Children())
+						{
+							<li><a href="@child.Url()">@child.Name</a></li>
+						}
+					</ul>
+				}
+			</li>
+		}
+	</ul>
+</nav>
