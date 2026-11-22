@@ -1,0 +1,9 @@
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridItem>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+	var data = (ContentModels.ImageBlock)Model.Content;
+}
+@if (data.Image is not null)
+{
+	<img src="@data.Image.Url()" alt="" />
+}
