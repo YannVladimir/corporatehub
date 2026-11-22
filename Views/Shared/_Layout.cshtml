@@ -8,6 +8,15 @@
 <body>
 	<header>
 		<partial name="Partials/Navigation" model="Model" />
+		<nav class="language-switcher">
+			@{
+				var homeNode = Model.Root();
+			}
+			@foreach (var culture in homeNode.Cultures)
+			{
+				<a href="@homeNode.Url(culture: culture.Key)">@culture.Value.Name</a>
+			}
+		</nav>
 	</header>
 
 	<main>
