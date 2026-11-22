@@ -85,7 +85,7 @@ not copied.
 Compositions reused across four page types, a shared layout, and a tree-driven nested
 nav — all built by hand, not from a starter kit.
 
-## Milestone 2 — current focus: Dynamic Content
+## Milestone 2 — complete: Dynamic Content
 
 Goal: give the marketing team an ongoing stream of content (articles/news) instead of
 fixed one-off pages — the listing/detail/tree pattern, Block List for structured body
@@ -128,16 +128,25 @@ content, and search/pagination once volume grows.
       articles — bump it up once there's more real content. `?page=N` combines with
       the existing `?category=X` filter via a local `PageUrl(int)` helper function so
       Previous/Next preserve the active category.
-- [ ] 7. Site search across articles and pages (Examine) — **not done yet, this is
-      the next step**
+- [x] 7. Site search across articles and pages (Examine) — done. `SearchResultsPage`
+      Document Type (child of `HomePage`, composes `SEO`, no custom properties — all
+      content is dynamic), published as `Search` under `Home` (shows up in the nav
+      automatically, no `Navigation.cshtml` changes needed). View uses `@inject
+      IExamineManager`, queries the `ExternalIndex` (published-only) by `nodeName`
+      with a wildcard match, and resolves each hit's ID back to real content via
+      `Umbraco.Content(id)`.
+
+**Milestone 2 (Dynamic Content) is fully complete.** Article listing/detail with
+Categories, Block List + Block Grid, a reusable teaser partial, pagination, and
+site search — all built from scratch, same "understand the wiring" standard as
+Milestone 1.
 
 ## Next step when you pick this back up
 
-Site search across articles and pages via Examine — see Milestone 2 step 7 above
-(the last Milestone 2 item). We haven't touched Examine yet this project — it's
-Umbraco's built-in Lucene-based search index, separate from the published-content
-cache `Model.Children<T>()` etc. have been querying so far.
+Start **Milestone 3 — Advanced Content**: multilingual (EN/FR/RW), scheduling,
+drafts/versioning, content permissions, SEO metadata (see Curriculum roadmap above).
+First concrete step: enable multilingual setup — add EN (default), FR, RW languages
+in Settings → Languages.
 
 Git workflow: one checklist item = one branch = one push = one PR, branched fresh off
-`main` each time (see `milestone-2-block-grid`/`milestone-2-article-teaser-partial`,
-both merged, as precedent). Never push straight to `main`.
+`main` each time. Never push straight to `main`.
