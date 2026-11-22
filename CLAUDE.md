@@ -196,9 +196,13 @@ versioning, content permissions, and full SEO meta tags.
 Goal: give site *visitors* (not backoffice editors) accounts, and gate some content
 behind a login — the public-facing side of Umbraco security.
 
-- [ ] 1. Create a Member Type (e.g. "Website Member") with custom properties —
-      **not done yet, this is the next step**
-- [ ] 2. Create Member Groups (e.g. "Customers", "Partners")
+- [x] 1. Create a Member Type (e.g. "Website Member") with custom properties —
+      done. `Full Name` and `Address` added, both set "Show on member profile" +
+      "Member can edit"; `Address` additionally marked "Is sensitive data" (hides it
+      from backoffice Users without explicit permission to view sensitive member
+      info — a real privacy/compliance control, not just UI polish).
+- [ ] 2. Create Member Groups (e.g. "Customers", "Partners") — **not done yet, this
+      is the next step**
 - [ ] 3. Build a registration page (Surface Controller)
 - [ ] 4. Build a login page + login status in the layout
 - [ ] 5. Protect a content branch to a Member Group; verify anonymous users get redirected
@@ -206,10 +210,7 @@ behind a login — the public-facing side of Umbraco security.
 
 ## Next step when you pick this back up
 
-Create a Member Type (e.g. "Website Member") — see Milestone 4 step 1 above. Settings
-→ Member Types. Note: Members are a completely separate system from backoffice Users —
-Members are site *visitors* who register/log in on the public site; Users are
-backoffice editors (like your own Administrator account).
+Create Member Groups (e.g. "Customers", "Partners") — see Milestone 4 step 2 above.
 
 Git workflow: one checklist item = one branch = one push = one PR, branched fresh off
 `main` each time. Never push straight to `main`.
