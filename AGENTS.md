@@ -118,18 +118,22 @@ content, and search/pagination once volume grows.
       the `blocklist/Components/` ones — different model type, `BlockGridItem` vs
       `BlockListItem` — even for the same `Text Block` Element Type). Not using
       Areas (nested block containers) yet — flat row of blocks only.
-- [ ] 5. Extract a reusable article teaser card as a Partial View — **not done yet,
-      this is the next step**
+- [x] 5. Extract a reusable article teaser card as a Partial View — done.
+      `Views/Partials/ArticleTeaser.cshtml` (`@inherits UmbracoViewPage<ContentModels.Article>`),
+      called from `ArticlesLandingPage.cshtml`'s loop via
+      `<partial name="Partials/ArticleTeaser" model="article" />`. Same motivation as
+      Compositions in Milestone 1 — edit the teaser once, every caller picks it up.
 - [ ] 6. Real pagination on the article listing (currently lists all children, unpaged)
+      — **not done yet, this is the next step**
 - [ ] 7. Site search across articles and pages (Examine)
 
 ## Next step when you pick this back up
 
-Extract a reusable article teaser card as a Partial View — see Milestone 2 step 5
-above. `ArticlesLandingPage.cshtml`'s `<li><a>...</a></li>` is the obvious candidate
-to pull out, since the same card shape will likely get reused (related-articles list,
-etc.).
+Build real pagination on `ArticlesLandingPage.cshtml` — see Milestone 2 step 6 above.
+Currently it lists every `Article` child unpaged via `Model.Children<ContentModels.Article>()`;
+needs a page-size limit + page-number query-string param (same `Context.Request.Query`
+pattern already used for category filtering) and prev/next links.
 
-Currently on git branch `milestone-2-block-grid` (not pushed yet) — per the git
-workflow preference, push feature branches and let the user open/merge the PR from
-GitHub themselves; never push straight to `main`.
+Git workflow: one checklist item = one branch = one push = one PR, branched fresh off
+`main` each time (see `milestone-2-block-grid`, now merged, as the precedent). Never
+push straight to `main`.
