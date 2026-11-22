@@ -26,6 +26,6 @@
 <ul>
 	@foreach (var article in articles)
 	{
-		<li><a href="@article.Url()">@article.Heading</a></li>
+		<partial name="Partials/ArticleTeaser" model="article" />
 	}
 </ul>
