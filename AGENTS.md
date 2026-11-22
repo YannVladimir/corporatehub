@@ -224,17 +224,24 @@ behind a login — the public-facing side of Umbraco security.
       **`.cs` files need a full app restart to be picked up** — unlike `.cshtml` views,
       which Umbraco recompiles live on every request; this cost real debugging time
       until realized.
-- [ ] 4. Build a login page + login status in the layout — **not done yet, this is
-      the next step**
-- [ ] 5. Protect a content branch to a Member Group; verify anonymous users get redirected
+- [x] 4. Build a login page + login status in the layout — done.
+      `Models/LoginMemberViewModel.cs`, `Controllers/MemberLoginSurfaceController.cs`
+      (`HandleLogin` + `HandleLogout` actions), `Views/Partials/MemberLoginForm.cshtml`,
+      `LoginPage` Document Type. `_Layout.cshtml` uses `@inject IMemberManager` +
+      `MemberManager.IsLoggedIn()`/`GetCurrentMemberAsync()` to show "Welcome, X" +
+      a Logout button when signed in; deliberately shows nothing extra when logged
+      out, since `Login`/`Register` already appear in the tree-driven nav — avoided
+      hardcoding duplicate guessed URLs.
+- [ ] 5. Protect a content branch to a Member Group; verify anonymous users get
+      redirected — **not done yet, this is the next step**
 - [ ] 6. Add a profile edit / password reset page
 
 ## Next step when you pick this back up
 
-Build a login page + login status in the layout — see Milestone 4 step 4 above. Same
-Surface Controller pattern as registration, this time using `MemberSignInManager`'s
-sign-in (not create) methods, plus checking `Member.IsLoggedIn()` or similar in
-`_Layout.cshtml` to show logged-in-state.
+Protect a content branch to a Member Group — see Milestone 4 step 5 above. Use the
+`News Editors`-style backoffice permission pattern but for Members this time (Umbraco
+calls this "Public Access" on a content node, not "Culture and Hostnames"). Verify an
+anonymous visitor gets redirected away from the protected branch.
 
 Git workflow: one checklist item = one branch = one push = one PR, branched fresh off
 `main` each time. Never push straight to `main`.

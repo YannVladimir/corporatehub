@@ -1,4 +1,6 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Security;
+@inject IMemberManager MemberManager
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,6 +28,17 @@
 				<a href="@homeNode.Url(culture: culture.Key)">@culture.Value.Name</a>
 			}
 		</nav>
+		@if (MemberManager.IsLoggedIn())
+		{
+			var currentMember = await MemberManager.GetCurrentMemberAsync();
+			<nav class="member-status">
+				<span>Welcome, @currentMember?.Name</span>
+				@using (Html.BeginUmbracoForm("HandleLogout", "MemberLoginSurface"))
+				{
+					<button type="submit">Logout</button>
+				}
+			</nav>
+		}
 	</header>
 
 	<main>
