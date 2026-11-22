@@ -282,18 +282,24 @@ data in from outside systems (APIs).
       **zero** requests, confirming the browser blocks it before any round trip.
       Since every form (Contact, Register, Login, Profile) shares this one layout,
       all of them gained client-side validation at once.
-- [ ] 3. Wire up email notifications on submit (SMTP, `IEmailSender`) — **not done
-      yet, this is the next step**
-- [ ] 4. Add a Job Application form with file upload (CV/resume) handling
+- [x] 3. Wire up email notifications on submit — done. `Umbraco.Cms.Core.Mail.IEmailSender`
+      injected into `ContactSurfaceController`, builds an `EmailMessage` (from/to/
+      subject/body/isBodyHtml) and calls `SendAsync`. `appsettings.Development.json`
+      has a placeholder `Umbraco:CMS:Global:Smtp` section (`localhost:25`) — real
+      credentials deliberately not configured (user's choice: verify via logging,
+      not a real delivered email). The send is wrapped in try/catch + `ILogger` so a
+      failed/unreachable SMTP server doesn't break the visitor's submission with a
+      500 error — logs the failure instead of throwing.
+- [ ] 4. Add a Job Application form with file upload (CV/resume) handling —
+      **not done yet, this is the next step**
 - [ ] 5. Call an external API from the backend and display the data on a page
 - [ ] 6. Build a small custom API endpoint exposing site data as JSON
 
 ## Next step when you pick this back up
 
-Wire up email notifications on submit — see Milestone 5 step 3 above. Needs SMTP
-configuration (appsettings.json) + `IEmailSender`/`EmailSenderOptions` injected into
-`ContactSurfaceController.HandleSubmit`, actually sending the submitted Name/Email/
-Message somewhere instead of discarding it.
+Add a Job Application form with file upload (CV/resume) handling — see Milestone 5
+step 4 above. New ground: `IFormFile` model binding, saving an uploaded file
+somewhere on disk (or into Media via `IMediaService`), and validating file type/size.
 
 Git workflow: one checklist item = one branch = one push = one PR, branched fresh off
 `main` each time. Never push straight to `main`.
