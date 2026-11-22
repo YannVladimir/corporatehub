@@ -1,0 +1,40 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.SearchResultsPage>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Core;
+@using Examine;
+@using Examine.Search;
+@inject IExamineManager ExamineManager
+@{
+	var searchTerm = Context.Request.Query["q"].ToString();
+	var results = Enumerable.Empty<ISearchResult>();
+
+	if (!string.IsNullOrWhiteSpace(searchTerm) && ExamineManager.TryGetIndex(Constants.UmbracoIndexes.ExternalIndexName, out var index))
+	{
+		results = index.Searcher
+			.CreateQuery("content")
+			.Field("nodeName", searchTerm.MultipleCharacterWildcard())
+			.Execute();
+	}
+}
+
+<h1>Search</h1>
+<form method="get">
+	<input type="text" name="q" value="@searchTerm" />
+	<button type="submit">Search</button>
+</form>
+
+@if (!string.IsNullOrWhiteSpace(searchTerm))
+{
+	<p>@results.Count() result(s) for "@searchTerm"</p>
+	<ul>
+		@foreach (var result in results)
+		{
+			var content = Umbraco.Content(result.Id);
+			if (content is not null)
+			{
+				<li><a href="@content.Url()">@content.Name</a></li>
+			}
+		}
+	</ul>
+}
