@@ -1,0 +1,16 @@
+@model CorporateHub.Models.EditProfileViewModel
+
+@using (Html.BeginUmbracoForm("HandleUpdateProfile", "MemberProfileSurface"))
+{
+	@Html.ValidationSummary(true)
+
+	<label>Full Name</label>
+	<input asp-for="FullName" />
+	<span asp-validation-for="FullName"></span>
+
+	<label>Address</label>
+	<input asp-for="Address" />
+	<span asp-validation-for="Address"></span>
+
+	<button type="submit">Save Profile</button>
+}
