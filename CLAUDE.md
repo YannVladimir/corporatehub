@@ -123,17 +123,21 @@ content, and search/pagination once volume grows.
       called from `ArticlesLandingPage.cshtml`'s loop via
       `<partial name="Partials/ArticleTeaser" model="article" />`. Same motivation as
       Compositions in Milestone 1 — edit the teaser once, every caller picks it up.
-- [ ] 6. Real pagination on the article listing (currently lists all children, unpaged)
-      — **not done yet, this is the next step**
-- [ ] 7. Site search across articles and pages (Examine)
+- [x] 6. Real pagination on the article listing — done, in `ArticlesLandingPage.cshtml`.
+      `pageSize` deliberately small (1) for now so paging is visible with only 2 test
+      articles — bump it up once there's more real content. `?page=N` combines with
+      the existing `?category=X` filter via a local `PageUrl(int)` helper function so
+      Previous/Next preserve the active category.
+- [ ] 7. Site search across articles and pages (Examine) — **not done yet, this is
+      the next step**
 
 ## Next step when you pick this back up
 
-Build real pagination on `ArticlesLandingPage.cshtml` — see Milestone 2 step 6 above.
-Currently it lists every `Article` child unpaged via `Model.Children<ContentModels.Article>()`;
-needs a page-size limit + page-number query-string param (same `Context.Request.Query`
-pattern already used for category filtering) and prev/next links.
+Site search across articles and pages via Examine — see Milestone 2 step 7 above
+(the last Milestone 2 item). We haven't touched Examine yet this project — it's
+Umbraco's built-in Lucene-based search index, separate from the published-content
+cache `Model.Children<T>()` etc. have been querying so far.
 
 Git workflow: one checklist item = one branch = one push = one PR, branched fresh off
-`main` each time (see `milestone-2-block-grid`, now merged, as the precedent). Never
-push straight to `main`.
+`main` each time (see `milestone-2-block-grid`/`milestone-2-article-teaser-partial`,
+both merged, as precedent). Never push straight to `main`.
