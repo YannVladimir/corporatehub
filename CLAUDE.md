@@ -141,12 +141,28 @@ Categories, Block List + Block Grid, a reusable teaser partial, pagination, and
 site search — all built from scratch, same "understand the wiring" standard as
 Milestone 1.
 
+## Milestone 3 — current focus: Advanced Content
+
+Goal: the editorial realities of a real site — multiple languages, scheduling,
+versioning, who's allowed to edit what, and how pages get found on Google.
+
+- [x] 1. Enable multilingual setup — done. English (default) + French + Kinyarwanda
+      all exist in Settings → Languages (Kinyarwanda was confirmed present in this
+      install's culture list — not something I was certain of in advance).
+- [ ] 2. Mark properties as culture-variant vs invariant; translate Home/About content
+      — **not done yet, this is the next step**
+- [ ] 3. Add a language switcher to the shared layout
+- [ ] 4. Explore scheduling — publish/unpublish a node at a future date/time
+- [ ] 5. Explore drafts & versioning — edit a published page, compare versions, roll back
+- [ ] 6. Set up content permissions — restrict a content branch to a user group
+- [ ] 7. Add the remaining SEO metadata (meta description, Open Graph tags) to
+      `_Layout.cshtml` — note: the `<title>` itself is already wired from the `SEO`
+      composition since Milestone 1; this step just fills in what's still missing.
+
 ## Next step when you pick this back up
 
-Start **Milestone 3 — Advanced Content**: multilingual (EN/FR/RW), scheduling,
-drafts/versioning, content permissions, SEO metadata (see Curriculum roadmap above).
-First concrete step: enable multilingual setup — add EN (default), FR, RW languages
-in Settings → Languages.
+Mark properties as culture-variant vs invariant, then translate Home/About content —
+see Milestone 3 step 2 above.
 
 Git workflow: one checklist item = one branch = one push = one PR, branched fresh off
 `main` each time. Never push straight to `main`.
