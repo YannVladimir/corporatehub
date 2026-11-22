@@ -141,7 +141,7 @@ Categories, Block List + Block Grid, a reusable teaser partial, pagination, and
 site search — all built from scratch, same "understand the wiring" standard as
 Milestone 1.
 
-## Milestone 3 — current focus: Advanced Content
+## Milestone 3 — complete: Advanced Content
 
 Goal: the editorial realities of a real site — multiple languages, scheduling,
 versioning, who's allowed to edit what, and how pages get found on Google.
@@ -177,17 +177,39 @@ versioning, who's allowed to edit what, and how pages get found on Google.
 - [x] 5. Explore drafts & versioning — done. Confirmed a plain Save creates a draft
       version invisible to the live site until published; found the version list on
       the "Info" tab, and used "Rollback..." to revert to a prior published version.
-- [ ] 6. Set up content permissions — restrict a content branch to a user group —
+- [x] 6. Set up content permissions — done. Found User Groups under the Users
+      section, created a restricted `News Editors` group scoped to the `News`
+      content branch.
+- [x] 7. Add the remaining SEO metadata to `_Layout.cshtml` — done. Meta description,
+      `og:title`, and `og:image` (null-checked, since Open Graph Image is optional)
+      added alongside the `<title>` that was already wired in Milestone 1. Used
+      `Model.Value<T>("alias")` (untyped) rather than strongly-typed properties,
+      since `_Layout.cshtml`'s `Model` is plain `IPublishedContent` — the generated
+      strongly-typed properties only exist on each specific page type's own class.
+
+**Milestone 3 (Advanced Content) is fully complete.** Multilingual content with real
+domain-based routing (ports standing in for domains locally), scheduling, drafts/
+versioning, content permissions, and full SEO meta tags.
+
+## Milestone 4 — current focus: Members & Auth
+
+Goal: give site *visitors* (not backoffice editors) accounts, and gate some content
+behind a login — the public-facing side of Umbraco security.
+
+- [ ] 1. Create a Member Type (e.g. "Website Member") with custom properties —
       **not done yet, this is the next step**
-- [ ] 7. Add the remaining SEO metadata (meta description, Open Graph tags) to
-      `_Layout.cshtml` — note: the `<title>` itself is already wired from the `SEO`
-      composition since Milestone 1; this step just fills in what's still missing.
+- [ ] 2. Create Member Groups (e.g. "Customers", "Partners")
+- [ ] 3. Build a registration page (Surface Controller)
+- [ ] 4. Build a login page + login status in the layout
+- [ ] 5. Protect a content branch to a Member Group; verify anonymous users get redirected
+- [ ] 6. Add a profile edit / password reset page
 
 ## Next step when you pick this back up
 
-Set up content permissions — see Milestone 3 step 6 above. Create a restricted User
-Group (e.g. "News Editors"), limited to only the `News` branch of the content tree,
-and confirm a user in that group can't see/edit outside it.
+Create a Member Type (e.g. "Website Member") — see Milestone 4 step 1 above. Settings
+→ Member Types. Note: Members are a completely separate system from backoffice Users —
+Members are site *visitors* who register/log in on the public site; Users are
+backoffice editors (like your own Administrator account).
 
 Git workflow: one checklist item = one branch = one push = one PR, branched fresh off
 `main` each time. Never push straight to `main`.

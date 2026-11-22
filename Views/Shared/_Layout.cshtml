@@ -4,6 +4,15 @@
 <head>
 	<meta charset="utf-8" />
 	<title>@(Model.Value<string>("browserTitle"))</title>
+	<meta name="description" content="@(Model.Value<string>("metaDescription"))" />
+	<meta property="og:title" content="@(Model.Value<string>("browserTitle"))" />
+	@{
+		var ogImage = Model.Value<IPublishedContent>("openGraphImage");
+	}
+	@if (ogImage is not null)
+	{
+		<meta property="og:image" content="@ogImage.Url()" />
+	}
 </head>
 <body>
 	<header>
