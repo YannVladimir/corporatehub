@@ -201,16 +201,23 @@ behind a login — the public-facing side of Umbraco security.
       "Member can edit"; `Address` additionally marked "Is sensitive data" (hides it
       from backoffice Users without explicit permission to view sensitive member
       info — a real privacy/compliance control, not just UI polish).
-- [ ] 2. Create Member Groups (e.g. "Customers", "Partners") — **not done yet, this
-      is the next step**
-- [ ] 3. Build a registration page (Surface Controller)
+- [x] 2. Create Member Groups (e.g. "Customers", "Partners") — done. Confirmed
+      Member Groups are pure categorization ("Member groups have no additional
+      properties for editing" — just a name), unlike User Groups' rich permission
+      config. The real work happens in step 5 when a group gets used to protect
+      a content branch.
+- [ ] 3. Build a registration page (Surface Controller) — **not done yet, this is
+      the next step**
 - [ ] 4. Build a login page + login status in the layout
 - [ ] 5. Protect a content branch to a Member Group; verify anonymous users get redirected
 - [ ] 6. Add a profile edit / password reset page
 
 ## Next step when you pick this back up
 
-Create Member Groups (e.g. "Customers", "Partners") — see Milestone 4 step 2 above.
+Build a registration page via a Surface Controller — see Milestone 4 step 3 above.
+First genuine custom C# controller in this project (not just `.cshtml` views) —
+`Umbraco.Cms.Web.Website.Controllers.SurfaceController`, DI-injected member
+management services, a real form POST with model binding and antiforgery.
 
 Git workflow: one checklist item = one branch = one push = one PR, branched fresh off
 `main` each time. Never push straight to `main`.
