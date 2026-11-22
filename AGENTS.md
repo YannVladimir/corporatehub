@@ -177,17 +177,19 @@ versioning, who's allowed to edit what, and how pages get found on Google.
 - [x] 5. Explore drafts & versioning — done. Confirmed a plain Save creates a draft
       version invisible to the live site until published; found the version list on
       the "Info" tab, and used "Rollback..." to revert to a prior published version.
-- [ ] 6. Set up content permissions — restrict a content branch to a user group —
-      **not done yet, this is the next step**
+- [x] 6. Set up content permissions — done. Found User Groups under the Users
+      section, created a restricted `News Editors` group scoped to the `News`
+      content branch.
 - [ ] 7. Add the remaining SEO metadata (meta description, Open Graph tags) to
-      `_Layout.cshtml` — note: the `<title>` itself is already wired from the `SEO`
-      composition since Milestone 1; this step just fills in what's still missing.
+      `_Layout.cshtml` — **not done yet, this is the next step** (note: the
+      `<title>` itself is already wired from the `SEO` composition since
+      Milestone 1; this step just fills in what's still missing)
 
 ## Next step when you pick this back up
 
-Set up content permissions — see Milestone 3 step 6 above. Create a restricted User
-Group (e.g. "News Editors"), limited to only the `News` branch of the content tree,
-and confirm a user in that group can't see/edit outside it.
+Add the remaining SEO metadata to `_Layout.cshtml` — see Milestone 3 step 7 above
+(the last Milestone 3 item). Meta description + Open Graph tags, same
+`Model.Value<string>("...")` pattern the `<title>` already uses.
 
 Git workflow: one checklist item = one branch = one push = one PR, branched fresh off
 `main` each time. Never push straight to `main`.
