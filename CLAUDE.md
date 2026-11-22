@@ -110,14 +110,26 @@ content, and search/pagination once volume grows.
       per-Element-Type render partial (unlike full page templates) — had to hand-write
       `Views/Partials/blocklist/Components/textBlock.cshtml`, rendered from
       `Article.cshtml` via `@await Html.PartialAsync("blocklist/default", Model.Body)`.
-- [ ] 4. Build a Block Grid property for flexible, marketing-editable page sections —
-      **not done yet, this is the next step**
-- [ ] 5. Extract a reusable article teaser card as a Partial View
+- [x] 4. Build a Block Grid property for flexible, marketing-editable page sections —
+      done. Added `Image Block` Element Type (Media Picker) alongside the existing
+      `Text Block`. `HomePage Blocks` Data Type (Block Grid, both blocks available),
+      property `Page Sections` on `HomePage`. Needed its own
+      `Views/Partials/blockgrid/Components/{alias}.cshtml` per block (separate from
+      the `blocklist/Components/` ones — different model type, `BlockGridItem` vs
+      `BlockListItem` — even for the same `Text Block` Element Type). Not using
+      Areas (nested block containers) yet — flat row of blocks only.
+- [ ] 5. Extract a reusable article teaser card as a Partial View — **not done yet,
+      this is the next step**
 - [ ] 6. Real pagination on the article listing (currently lists all children, unpaged)
 - [ ] 7. Site search across articles and pages (Examine)
 
 ## Next step when you pick this back up
 
-Build a Block Grid property — see Milestone 2 step 4 above. Likely on `HomePage`
-(flexible marketing-editable sections), reusing the `Text Block` Element Type plus
-at least one new one (e.g. an "Image Block" or "Call to Action" block).
+Extract a reusable article teaser card as a Partial View — see Milestone 2 step 5
+above. `ArticlesLandingPage.cshtml`'s `<li><a>...</a></li>` is the obvious candidate
+to pull out, since the same card shape will likely get reused (related-articles list,
+etc.).
+
+Currently on git branch `milestone-2-block-grid` (not pushed yet) — per the git
+workflow preference, push feature branches and let the user open/merge the PR from
+GitHub themselves; never push straight to `main`.

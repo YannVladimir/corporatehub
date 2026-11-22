@@ -3,3 +3,5 @@
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 <h1>@Model.Heading</h1>
 <p>@Model.IntroText</p>
+
+@await Html.PartialAsync("blockgrid/default", Model.PageSections)
