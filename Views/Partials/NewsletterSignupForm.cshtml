@@ -1,0 +1,10 @@
+@model CorporateHub.Models.NewsletterSignupViewModel
+
+@using (Html.BeginUmbracoForm("HandleSubscribe", "NewsletterSurface"))
+{
+	@Html.ValidationSummary(true)
+	<label>Subscribe to our newsletter</label>
+	<input asp-for="Email" placeholder="you@example.com" />
+	<span asp-validation-for="Email"></span>
+	<button type="submit">Subscribe</button>
+}
