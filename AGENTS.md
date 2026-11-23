@@ -260,7 +260,7 @@ login with status in the layout, content gated to a Member Group, and self-servi
 profile editing + password change — all via hand-written Surface Controllers, the
 first real custom C# in the project.
 
-## Milestone 5 — current focus: Forms & Integrations
+## Milestone 5 — complete: Forms & Integrations
 
 Goal: two-way traffic — letting visitors send data in (contact/job forms) and pulling
 data in from outside systems (APIs).
@@ -314,17 +314,52 @@ data in from outside systems (APIs).
       homepage - the widget just silently doesn't show. **Gotcha:** `IHttpClientFactory`
       lives in `System.Net.Http`, not covered by the default `_ViewImports.cshtml`
       usings - needed an explicit `@using`.
-- [ ] 6. Build a small custom API endpoint exposing site data as JSON — **not done
-      yet, this is the next step**
+- [x] 6. Build a small custom API endpoint exposing site data as JSON — done.
+      `Controllers/ArticlesApiController.cs` (`[ApiController]`, `ControllerBase` —
+      not a Surface Controller), `GET /api/articles`, injects `IPublishedContentQuery`
+      (works with no current-page context, unlike `Model.Children<T>()`).
+      **Hit the ModelsBuilder "InMemoryAuto" limitation head-on:** `ContentModels.*`
+      strongly-typed classes (`HomePage`, `Article`, etc.) only exist for `.cshtml`
+      files — a plain `.cs` class genuinely cannot reference them in this mode (the
+      Models Builder dashboard says so explicitly: "not available to code outside of
+      Razor"). Fell back to plain `IPublishedContent` + `ContentType.Alias` checks +
+      `.Value<T>("alias")`, same untyped approach `_Layout.cshtml` already used for
+      SEO meta tags. Also hit the familiar `Children` vs `Children()` gotcha again
+      (extension method, not a property) — same root cause as the very first
+      `Navigation.cshtml` bug back in Milestone 1.
+
+**Milestone 5 (Forms & Integrations) is fully complete.** Contact + Job Application
+forms with real validation, email notifications (logging-verified, no real SMTP),
+file upload handling kept private outside `wwwroot`, an external API call, and a
+custom JSON API endpoint.
+
+## Milestone 6 — current focus: Custom Dev
+
+Goal: the skills that separate "I followed a tutorial" from "I can work in an
+existing Umbraco codebase" — the .NET-developer side of Umbraco.
+
+- [ ] 1. Build a custom Surface Controller for an interactive feature (e.g. newsletter
+      signup) — **not done yet, this is the next step**
+- [ ] 2. Build a Razor ViewComponent for a reusable, self-contained widget (e.g.
+      "Latest Articles" widget) — good candidate: refactor the Milestone 5 weather
+      widget (currently inline-in-view in `HomePage.cshtml`) into a proper ViewComponent,
+      closing the architectural shortcut flagged twice already
+- [ ] 3. Register and consume a custom service via Dependency Injection
+- [ ] 4. Use core Umbraco Services (`IContentService`, `IMediaService`) to read/write
+      content from code
+- [ ] 5. Hook into a Notification/event (e.g. `ContentPublishedNotification`) to run
+      custom logic on publish
+- [ ] 6. Build a custom backoffice dashboard for the marketing team's section
+- [ ] 7. Build a custom property editor (e.g. a simple color swatch picker)
+- [ ] 8. Add a custom EF Core table alongside Umbraco's schema (e.g. a form submission
+      log) and migrate it
 
 ## Next step when you pick this back up
 
-Build a small custom API endpoint exposing site data as JSON — see Milestone 5 step 6
-above (the last Milestone 5 item). This is a genuine ASP.NET Core Web API controller
-(`[ApiController]`, `ControllerBase`), not a Surface Controller like every other form
-this milestone — no `Model`/current-page context, so querying content needs a
-different approach (`IPublishedContentQuery` or similar, not `Model.Children<T>()`).
-E.g. `GET /api/articles` returning published articles as JSON (title, url, date).
+Build a custom Surface Controller for an interactive feature — see Milestone 6 step 1
+above. Newsletter signup is a good fit (simple: email in, store or log it) — by now
+this is the sixth Surface Controller, so lean on the established pattern rather than
+re-explaining the mechanics from scratch.
 
 Git workflow: one checklist item = one branch = one push = one PR, branched fresh off
 `main` each time. Never push straight to `main`.
