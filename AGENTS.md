@@ -338,12 +338,16 @@ custom JSON API endpoint.
 Goal: the skills that separate "I followed a tutorial" from "I can work in an
 existing Umbraco codebase" — the .NET-developer side of Umbraco.
 
-- [ ] 1. Build a custom Surface Controller for an interactive feature (e.g. newsletter
-      signup) — **not done yet, this is the next step**
-- [ ] 2. Build a Razor ViewComponent for a reusable, self-contained widget (e.g.
-      "Latest Articles" widget) — good candidate: refactor the Milestone 5 weather
-      widget (currently inline-in-view in `HomePage.cshtml`) into a proper ViewComponent,
-      closing the architectural shortcut flagged twice already
+- [x] 1. Build a custom Surface Controller for an interactive feature — done.
+      Newsletter signup (`NewsletterSignupViewModel`, `NewsletterSurfaceController`,
+      `NewsletterSignupForm.cshtml`) embedded directly in `_Layout.cshtml`'s
+      `<footer>` — first form living in the shared layout rather than its own
+      dedicated page, so it appears on every page site-wide. No real persistence
+      yet (logs only) — that's step 8 (EF Core table).
+- [ ] 2. Build a Razor ViewComponent for a reusable, self-contained widget — **not
+      done yet, this is the next step**. Good candidate: refactor the Milestone 5
+      weather widget (currently inline-in-view in `HomePage.cshtml`) into a proper
+      ViewComponent, closing the architectural shortcut flagged twice already
 - [ ] 3. Register and consume a custom service via Dependency Injection
 - [ ] 4. Use core Umbraco Services (`IContentService`, `IMediaService`) to read/write
       content from code
@@ -356,10 +360,10 @@ existing Umbraco codebase" — the .NET-developer side of Umbraco.
 
 ## Next step when you pick this back up
 
-Build a custom Surface Controller for an interactive feature — see Milestone 6 step 1
-above. Newsletter signup is a good fit (simple: email in, store or log it) — by now
-this is the sixth Surface Controller, so lean on the established pattern rather than
-re-explaining the mechanics from scratch.
+Build a Razor ViewComponent for a reusable, self-contained widget — see Milestone 6
+step 2 above. Refactor the Milestone 5 weather widget out of `HomePage.cshtml` into a
+proper ViewComponent (`Invoke()`/`InvokeAsync()` + its own small view), callable via
+`@await Component.InvokeAsync("...")` from any page — not just Home.
 
 Git workflow: one checklist item = one branch = one push = one PR, branched fresh off
 `main` each time. Never push straight to `main`.
