@@ -11,6 +11,11 @@ builder.CreateUmbracoBuilder()
     .AddComposers()
     .Build();
 
+builder.Services.AddHttpClient("OpenMeteo", client =>
+{
+    client.BaseAddress = new Uri("https://api.open-meteo.com/");
+});
+
 WebApplication app = builder.Build();
 
 

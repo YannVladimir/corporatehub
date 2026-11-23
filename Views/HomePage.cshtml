@@ -1,7 +1,31 @@
 ﻿@using Umbraco.Cms.Web.Common.PublishedModels;
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.HomePage>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using CorporateHub.Models;
+@using System.Net.Http;
+@using System.Text.Json;
+@inject IHttpClientFactory HttpClientFactory
 <h1>@Model.Heading</h1>
 <p>@Model.IntroText</p>
+
+@{
+	double? kigaliTemperature = null;
+	try
+	{
+		var client = HttpClientFactory.CreateClient("OpenMeteo");
+		var json = await client.GetStringAsync("v1/forecast?latitude=-1.9441&longitude=30.0619&current=temperature_2m");
+		var weather = JsonSerializer.Deserialize<OpenMeteoResponse>(json);
+		kigaliTemperature = weather?.Current?.Temperature2m;
+	}
+	catch (Exception)
+	{
+		// External API can be unreachable/down - don't let that break the homepage,
+		// just skip showing the widget.
+	}
+}
+@if (kigaliTemperature is not null)
+{
+	<p>Current weather in Kigali: @kigaliTemperature&deg;C</p>
+}
 
 @await Html.PartialAsync("blockgrid/default", Model.PageSections)

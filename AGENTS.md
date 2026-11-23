@@ -303,17 +303,28 @@ data in from outside systems (APIs).
       attachment-supporting constructor (`resume.OpenReadStream()` called a *second*
       time, since the first stream — used to save to disk — was already consumed).
       Confirmed: same expected "failed to send, no SMTP configured" log as Contact.
-- [ ] 5. Call an external API from the backend and display the data on a page —
-      **not done yet, this is the next step**
-- [ ] 6. Build a small custom API endpoint exposing site data as JSON
+- [x] 5. Call an external API from the backend and display the data on a page —
+      done. Open-Meteo (free, no API key) weather for Kigali shown on `HomePage`.
+      `builder.Services.AddHttpClient("OpenMeteo", ...)` in `Program.cs`, consumed
+      via `@inject IHttpClientFactory` directly in the view (same inline-in-view
+      style as Examine search — flagged that Milestone 6's ViewComponent is the more
+      proper pattern for this). `Models/OpenMeteoResponse.cs` with
+      `[JsonPropertyName("temperature_2m")]` to map the API's snake_case JSON.
+      Wrapped in try/catch so an unreachable third-party API can't break the
+      homepage - the widget just silently doesn't show. **Gotcha:** `IHttpClientFactory`
+      lives in `System.Net.Http`, not covered by the default `_ViewImports.cshtml`
+      usings - needed an explicit `@using`.
+- [ ] 6. Build a small custom API endpoint exposing site data as JSON — **not done
+      yet, this is the next step**
 
 ## Next step when you pick this back up
 
-Call an external API from the backend and display the data on a page — see
-Milestone 5 step 5 above. Needs a decision only the user can make: which external
-API to call (a weather API, GitHub, exchange rates, etc.) — ask before building
-anything. Mechanism: `IHttpClientFactory`, a typed/named `HttpClient`, deserialize
-the JSON response, render it in a view.
+Build a small custom API endpoint exposing site data as JSON — see Milestone 5 step 6
+above (the last Milestone 5 item). This is a genuine ASP.NET Core Web API controller
+(`[ApiController]`, `ControllerBase`), not a Surface Controller like every other form
+this milestone — no `Model`/current-page context, so querying content needs a
+different approach (`IPublishedContentQuery` or similar, not `Model.Children<T>()`).
+E.g. `GET /api/articles` returning published articles as JSON (title, url, date).
 
 Git workflow: one checklist item = one branch = one push = one PR, branched fresh off
 `main` each time. Never push straight to `main`.
